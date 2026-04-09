@@ -1,8 +1,8 @@
-// ── Estado central de la aplicación ──
+// ── Estado central ──
 let tarjetas = [];
 let idContador = 1;
 
-// Genera un ID único
+// Generar ID único
 const generarId = () => idContador++;
 
 // Leer y limpiar inputs
@@ -13,20 +13,16 @@ const leerCampo = (selector) => {
   return valor;
 };
 
-// Referencia a la galería
+// Referencia galería
 const galeria = document.querySelector("#galeria");
-// ── Crear elemento tarjeta ──
+
+// ── Crear tarjeta ──
 const crearElementoTarjeta = ({ id, titulo, descripcion, categoria }) => {
-  // Crear contenedor
   const tarjeta = document.createElement("article");
 
-  // Clases
   tarjeta.classList.add("tarjeta", `categoria-${categoria}`);
-
-  // Guardar ID
   tarjeta.dataset.id = id;
 
-  // Contenido HTML
   tarjeta.innerHTML = `
     <span class="badge">${categoria}</span>
     <h3>${titulo}</h3>
@@ -36,19 +32,48 @@ const crearElementoTarjeta = ({ id, titulo, descripcion, categoria }) => {
 
   return tarjeta;
 };
+
+// ── Contador y mensaje ──
+const actualizarContador = () => {
+  const visibles = galeria.querySelectorAll(".tarjeta:not(.oculta)").length;
+
+  let contador = document.querySelector("#contador");
+
+  if (!contador) {
+    contador = document.createElement("p");
+    contador.id = "contador";
+    document
+      .querySelector("#filtros")
+      .insertAdjacentElement("afterend", contador);
+  }
+
+  contador.textContent = `Mostrando ${visibles} tarjeta(s)`;
+
+  const sinTarjetas = galeria.querySelectorAll(".tarjeta").length === 0;
+
+  if (sinTarjetas) {
+    galeria.innerHTML = `
+      <p class="mensaje-vacio">
+        No hay tarjetas. Crea la primera usando el formulario.
+      </p>
+    `;
+  } else {
+    const msg = galeria.querySelector(".mensaje-vacio");
+    if (msg) msg.remove();
+  }
+};
+
 // ── Agregar tarjeta ──
 const agregarTarjeta = () => {
   const titulo = leerCampo("#input-titulo");
   const descripcion = leerCampo("#input-descripcion");
   const categoria = document.querySelector("#select-categoria").value;
 
-  // Validación
   if (!titulo || !descripcion) {
     alert("El título y la descripción son obligatorios.");
     return;
   }
 
-  // Crear objeto
   const nuevaTarjeta = {
     id: generarId(),
     titulo,
@@ -56,53 +81,43 @@ const agregarTarjeta = () => {
     categoria,
   };
 
-  // Guardar en estado
   tarjetas.push(nuevaTarjeta);
 
-  // Crear elemento HTML
   const elemento = crearElementoTarjeta(nuevaTarjeta);
-
-  // Agregar al DOM
   galeria.appendChild(elemento);
 
-  // Ver en consola (debug)
-  console.log(tarjetas);
+  actualizarContador();
 };
 
-// Evento botón
+// Evento agregar
 document
   .querySelector("#btn-agregar")
   .addEventListener("click", agregarTarjeta);
-// ── Delegación de eventos para eliminar ──
+
+// ── Eliminar (delegación) ──
 galeria.addEventListener("click", (e) => {
-  // Verifica que el clic sea en botón eliminar
   if (!e.target.matches(".btn-eliminar")) return;
 
   const idEliminar = Number(e.target.dataset.id);
 
-  // Eliminar del estado
   tarjetas = tarjetas.filter((t) => t.id !== idEliminar);
 
-  // Eliminar del DOM
   const elemento = galeria.querySelector(`[data-id="${idEliminar}"]`);
   if (elemento) elemento.remove();
 
-  console.log(tarjetas);
+  actualizarContador();
 });
+
 // ── Filtros ──
 const btnsFiltro = document.querySelectorAll(".btn-filtro");
 
 btnsFiltro.forEach((btn) => {
   btn.addEventListener("click", () => {
-    // Quitar clase activa de todos
     btnsFiltro.forEach((b) => b.classList.remove("activo"));
-
-    // Activar el seleccionado
     btn.classList.add("activo");
 
     const categoriaFiltro = btn.dataset.categoria;
 
-    // Obtener todas las tarjetas
     const todasLasTarjetas = galeria.querySelectorAll(".tarjeta");
 
     todasLasTarjetas.forEach((tarjeta) => {
@@ -115,5 +130,7 @@ btnsFiltro.forEach((btn) => {
         tarjeta.classList.toggle("oculta", !coincide);
       }
     });
+
+    actualizarContador();
   });
 });

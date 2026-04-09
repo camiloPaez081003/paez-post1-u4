@@ -6,3 +6,17 @@
   background: #c62828;
   color: white;
 }
+.oculta {
+  display: none;
+}
+
+.activo {
+  background: #c62828;
+  color: white;
+}
+
+.mensaje-vacio {
+  text-align: center;
+  color: #808080;
+  margin-top: 20px;
+}
