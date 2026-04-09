@@ -1,20 +1,106 @@
-.oculta {
-  display: none;
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+  padding: 20px;
+}
+
+/* Título */
+h1 {
+  margin-bottom: 20px;
+}
+
+/* Controles */
+#controles {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+input,
+select,
+button {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Botón principal */
+#btn-agregar {
+  background: #c62828;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#btn-agregar:hover {
+  background: #e53935;
+}
+
+/* Filtros */
+#filtros {
+  margin-bottom: 20px;
+}
+
+.btn-filtro {
+  margin-right: 5px;
+  padding: 6px 10px;
+  cursor: pointer;
 }
 
 .activo {
   background: #c62828;
   color: white;
 }
+
+/* Galería */
+#galeria {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+/* Tarjeta */
+.tarjeta {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Badge */
+.badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #c62828;
+  color: white;
+  padding: 3px 8px;
+  font-size: 12px;
+  border-radius: 5px;
+}
+
+/* Botón eliminar */
+.btn-eliminar {
+  margin-top: 10px;
+  background: #8e0000;
+  color: white;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.btn-eliminar:hover {
+  background: #c62828;
+}
+
+/* Ocultar */
 .oculta {
   display: none;
 }
 
-.activo {
-  background: #c62828;
-  color: white;
-}
-
+/* Mensaje vacío */
 .mensaje-vacio {
   text-align: center;
   color: #808080;
