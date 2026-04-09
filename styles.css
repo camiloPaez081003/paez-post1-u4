@@ -1,0 +1,8 @@
+.oculta {
+  display: none;
+}
+
+.activo {
+  background: #c62828;
+  color: white;
+}
